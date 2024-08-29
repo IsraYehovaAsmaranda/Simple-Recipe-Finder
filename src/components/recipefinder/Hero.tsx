@@ -12,6 +12,7 @@ import {
   FormItem,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useEffect } from "react";
 
 // Define Form Rules / Schema
 const formSchema = z.object({
@@ -19,6 +20,34 @@ const formSchema = z.object({
 });
 
 export default function Hero() {
+  const handleSearch = (searchValue: string) => {
+    if (searchValue) {
+      const currentUrl = new URL(window.location.href);
+      currentUrl.searchParams.set('search', searchValue);
+
+      // Redirect to the new URL with the search parameter
+      window.location.href = currentUrl.toString();
+    }
+  }
+
+  const clearSearchParam = () => {
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.delete('search');
+
+    // Update the browser's URL without reloading the page
+    window.history.pushState({}, '', currentUrl.pathname + currentUrl.search);
+    window.location.reload();
+  };
+
+  const getSearchParam = () => {
+    const params = new URLSearchParams(window.location.search);
+    const searchParam = params.get('search');
+    if (searchParam) {
+      return searchParam;
+    }
+    return '';
+  }
+
   // Define Form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -29,8 +58,12 @@ export default function Hero() {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    handleSearch(values.search);
   }
+
+  useEffect(() => {
+    form.setValue('search', getSearchParam())
+  }, [])
 
   return (
     <header className="bg-blue-200 p-8">
@@ -57,11 +90,12 @@ export default function Hero() {
                         <FormControl>
                           <div className="flex gap-2">
                             <Input
-                              placeholder="Cari Resep"
+                              placeholder="Cari Makanan"
                               {...field}
                               className="w-full"
                             />
-                            <Button type="submit">Cari</Button>
+                            <Button type="submit" className="bg-green-600 hover:bg-green-700">Cari</Button>
+                            <Button type="button" variant={'destructive'} onClick={clearSearchParam}>Reset Pencarian</Button>
                           </div>
                         </FormControl>
                         <FormDescription>

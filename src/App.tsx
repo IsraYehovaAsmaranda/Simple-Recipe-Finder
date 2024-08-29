@@ -5,10 +5,8 @@ import "../app/globals.css";
 function App() {
   return (
     <>
-      <div className="">
         <Hero />
         <RecipeBody />
-      </div>
     </>
   );
 }
