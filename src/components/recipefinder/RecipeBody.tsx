@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Meal {
   idMeal: string;
@@ -67,6 +68,12 @@ interface Meal {
 export default function RecipeBody() {
   const [dataMakanan, setDataMakanan] = useState<Meal[]>([]);
 
+  const navigate = useNavigate();
+
+  const navigateToMeal = (mealId: string) => {
+    navigate(`/${mealId}`)
+  }
+
   const getSearchParams = () => {
     const params = new URLSearchParams(window.location.search);
     const searchParam = params.get('search');
@@ -115,7 +122,7 @@ export default function RecipeBody() {
                   <p>Makanan ini termasuk kategori {data.strCategory} yang berasal dari {data.strArea}</p>
                 </CardContent>
                 <CardFooter>
-                  <Button className="bg-green-600 hover:bg-green-700">Lihat Resep</Button>
+                  <Button className="bg-green-600 hover:bg-green-700" onClick={() => {navigateToMeal(data.idMeal)}}>Lihat Resep</Button>
                 </CardFooter>
               </Card>
             </div>
