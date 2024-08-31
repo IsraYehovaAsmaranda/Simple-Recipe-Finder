@@ -71,17 +71,17 @@ export default function RecipeBody() {
   const navigate = useNavigate();
 
   const navigateToMeal = (mealId: string) => {
-    navigate(`/${mealId}`)
-  }
+    navigate(`/${mealId}`);
+  };
 
   const getSearchParams = () => {
     const params = new URLSearchParams(window.location.search);
-    const searchParam = params.get('search');
+    const searchParam = params.get("search");
     if (searchParam) {
       return searchParam;
     }
-    return '';
-  }
+    return "";
+  };
 
   const getDataMakanan = async () => {
     const searchValue = getSearchParams();
@@ -108,21 +108,36 @@ export default function RecipeBody() {
       <div className="flex flex-wrap">
         {dataMakanan ? (
           dataMakanan.map((data, index) => (
-            <div key={index} className="flex flex-shrink w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-2 mb-4">
-              <Card key={index} className="shadow-xl hover:bg-blue-200">
+            <div
+              key={index}
+              className="flex flex-shrink w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 px-2 mb-4"
+            >
+              <Card
+                key={index}
+                className="shadow-xl hover:bg-blue-200 group overflow-hidden"
+              >
                 <CardHeader>
-                  <img
-                    src={data.strMealThumb}
-                    className="w-full h-1/4"
-                    alt="Gambar Makanan"
-                  />
+                  <div
+                    className="w-full h-64 rounded-lg bg-cover bg-center group-hover:scale-95 transition-all duration-500"
+                    style={{ backgroundImage: `url(${data.strMealThumb})` }}
+                  ></div>
                   <CardTitle>{data.strMeal}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p>Makanan ini termasuk kategori {data.strCategory} yang berasal dari {data.strArea}</p>
+                  <p>
+                    Makanan ini termasuk kategori {data.strCategory} yang
+                    berasal dari {data.strArea}
+                  </p>
                 </CardContent>
                 <CardFooter>
-                  <Button className="bg-green-600 hover:bg-green-700" onClick={() => {navigateToMeal(data.idMeal)}}>Lihat Resep</Button>
+                  <Button
+                    className="bg-green-600 hover:bg-green-700"
+                    onClick={() => {
+                      navigateToMeal(data.idMeal);
+                    }}
+                  >
+                    Lihat Resep
+                  </Button>
                 </CardFooter>
               </Card>
             </div>
