@@ -8,20 +8,12 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        <Hero />
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<RecipeBody />} />
           <Route path="/:mealId" element={<MealPage />} />
         </Routes>
       </BrowserRouter>
-    </>
-  );
-}
-
-function HomePage() {
-  return (
-    <>
-      <Hero />
-      <RecipeBody />
     </>
   );
 }

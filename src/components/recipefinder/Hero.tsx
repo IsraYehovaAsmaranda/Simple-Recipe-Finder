@@ -22,7 +22,7 @@ const formSchema = z.object({
 export default function Hero() {
   const handleSearch = (searchValue: string) => {
     if (searchValue) {
-      const currentUrl = new URL(window.location.href);
+      const currentUrl = new URL(window.location.origin);
       currentUrl.searchParams.set('search', searchValue);
 
       // Redirect to the new URL with the search parameter
@@ -31,7 +31,7 @@ export default function Hero() {
   }
 
   const clearSearchParam = () => {
-    const currentUrl = new URL(window.location.href);
+    const currentUrl = new URL(window.location.origin);
     currentUrl.searchParams.delete('search');
 
     // Update the browser's URL without reloading the page
@@ -70,13 +70,13 @@ export default function Hero() {
       <div className="grid min-h-[50vh] w-full place-items-center">
         <div className="container mx-auto px-4 text-center">
           <h1 className="mx-auto my-6 w-full leading-snug  !text-2xl lg:max-w-3xl lg:!text-5xl">
-            Selamat datang di
+            Welcome to
           </h1>
           <h1 className="mx-auto my-6 w-full leading-snug  !text-2xl lg:max-w-3xl lg:!text-5xl text-green-600">
             Simple Recipe Finder
           </h1>
           <h1 className="mx-auto w-full !text-gray-500 lg:text-lg text-base">
-            Luangkan waktu anda untuk mempelajari resep baru melalui website ini
+            Spend your time to learn new recipe and improve your cooking skill through this website
           </h1>
           <div className="mt-8 grid w-full place-items-start md:justify-center">
             <div className="mb-2 flex w-full flex-col gap-4 md:flex-row">
@@ -90,17 +90,16 @@ export default function Hero() {
                         <FormControl>
                           <div className="flex gap-2">
                             <Input
-                              placeholder="Cari Makanan"
+                              placeholder="Find a food"
                               {...field}
                               className="w-full"
                             />
-                            <Button type="submit" className="bg-green-600 hover:bg-green-700">Cari</Button>
-                            <Button type="button" variant={'destructive'} onClick={clearSearchParam}>Reset Pencarian</Button>
+                            <Button type="submit" className="bg-green-600 hover:bg-green-700">Find</Button>
+                            <Button type="button" variant={'destructive'} onClick={clearSearchParam}>Reset</Button>
                           </div>
                         </FormControl>
                         <FormDescription>
-                          Cari resep dengan menggunakan input yang telah
-                          disediakan
+                          Look for a recipe by inputting the name of the food you want to try
                         </FormDescription>
                       </FormItem>
                     )}

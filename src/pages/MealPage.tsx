@@ -7,7 +7,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Hero from "../components/recipefinder/Hero";
+import { Button } from "@/components/ui/button";
+import { GoArrowLeft } from "react-icons/go";
+import { useNavigate } from "react-router-dom";
 
 interface Meal {
   idMeal: string;
@@ -70,65 +72,104 @@ export default function MealPage() {
 
   const { mealId } = useParams<{ mealId: string }>();
 
-  const dataMeal = async () => {
+  const navigate = useNavigate();
+
+  const navigateToOrigin = async () => {
+    navigate("/");
+  };
+
+  const getSelectedMeal = async () => {
     const fetchData = await fetch(
       `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`
     );
     const jsonData = await fetchData.json();
-    setDataMakanan(jsonData.meals[0]);
+    const finalData = jsonData.meals[0];
+    setDataMakanan(finalData);
   };
 
   useEffect(() => {
-    dataMeal();
-    console.log(dataMakanan);
+    getSelectedMeal();
   }, []);
 
   return (
     <div className="mealpage">
-      <Hero />
-      <div className="container mx-auto mt-10 grid lg:grid-cols-2 gap-4">
+      <div className="container mx-auto mt-10">
+        <Button
+          className="bg-blue-600 hover:bg-blue-800"
+          onClick={navigateToOrigin}
+        >
+          <GoArrowLeft />
+          Go Back
+        </Button>
+      </div>
+      <div className="container mx-auto my-10 grid lg:grid-cols-2 gap-4 h-full">
         <div className="h-full">
-          <Card className="shadow-xl">
+          <Card className="flex flex-col shadow-xl h-full">
             <CardHeader>
               <div
-                className="w-full h-64 rounded-lg bg-cover bg-center group-hover:scale-95 transition-all duration-500"
+                className="w-full h-64 rounded-lg bg-cover bg-center"
                 style={{ backgroundImage: `url(${dataMakanan?.strMealThumb})` }}
               ></div>
-              <CardTitle>Instruksi Pembuatan {dataMakanan?.strMeal}</CardTitle>
+              <CardTitle>How to make {dataMakanan?.strMeal}</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex-1">
               {dataMakanan?.strInstructions}
             </CardContent>
-            <CardFooter>Footer</CardFooter>
+            <CardFooter className="mt-auto">
+              <a
+                href={dataMakanan?.strSource!}
+                target="_blank"
+                className="text-primary hover:underline underline-offset-4"
+              >
+                Link Sumber
+              </a>
+            </CardFooter>
           </Card>
         </div>
         <div className="grid grid-rows-2 gap-4">
           <div className="">
-            <Card className="shadow-xl hover:bg-blue-200">
+            <Card className="shadow-xl">
               <CardHeader>
-                <CardTitle>{dataMakanan?.strMeal}</CardTitle>
+                <CardTitle>Tutorial Video</CardTitle>
               </CardHeader>
               <CardContent>
-                <p>
-                  Makanan ini termasuk kategori {dataMakanan?.strCategory} yang
-                  berasal dari {dataMakanan?.strArea}
-                </p>
+                <iframe
+                  width="560"
+                  height="315"
+                  src="https://www.youtube.com/embed/c-GePPbJrBk?si=O22QJFgEPc5q1I6M"
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                ></iframe>
               </CardContent>
-              <CardFooter>Footer</CardFooter>
             </Card>
           </div>
           <div className="">
-            <Card className="shadow-xl hover:bg-blue-200">
+            <Card className="shadow-xl">
               <CardHeader>
-                <CardTitle>{dataMakanan?.strMeal}</CardTitle>
+                <CardTitle>
+                  Ingredients to make {dataMakanan?.strMeal}
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <p>
-                  Makanan ini termasuk kategori {dataMakanan?.strCategory} yang
-                  berasal dari {dataMakanan?.strArea}
-                </p>
+                <ul className="list-disc ml-4">
+                  {Array.from({ length: 20 }, (_, i) => {
+                    const ingredientKey = `strIngredient${i + 1}` as keyof Meal;
+                    const measureKey = `strMeasure${i + 1}` as keyof Meal;
+                    const ingredient = dataMakanan?.[ingredientKey];
+                    const measure = dataMakanan?.[measureKey];
+
+                    return ingredient ? (
+                      <li key={ingredientKey}>
+                        {measure && `${measure} `}
+                        {ingredient}
+                      </li>
+                    ) : null;
+                  })}
+                </ul>
               </CardContent>
-              <CardFooter>Footer</CardFooter>
             </Card>
           </div>
         </div>
