@@ -69,6 +69,7 @@ interface Meal {
 
 export default function MealPage() {
   const [dataMakanan, setDataMakanan] = useState<Meal | undefined>(undefined);
+  const [videoId, setVideoId] = useState<string>("");
 
   const { mealId } = useParams<{ mealId: string }>();
 
@@ -85,6 +86,15 @@ export default function MealPage() {
     const jsonData = await fetchData.json();
     const finalData = jsonData.meals[0];
     setDataMakanan(finalData);
+
+    const videoId = getYoutubeVideoId(finalData.strYoutube);
+    setVideoId(videoId);
+  };
+
+  const getYoutubeVideoId = (url: string) => {
+    const regExp = /^.*(youtu.be\/|v\/|embed\/|watch\?v=|watch\?.*?&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return match![2];
   };
 
   useEffect(() => {
@@ -136,7 +146,7 @@ export default function MealPage() {
                 <div className="relative overflow-hidden pb-[56.25%]">
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
-                    src="https://www.youtube.com/embed/c-GePPbJrBk?si=O22QJFgEPc5q1I6M"
+                    src={`https://www.youtube.com/embed/${videoId}`}
                     title="YouTube video player"
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
