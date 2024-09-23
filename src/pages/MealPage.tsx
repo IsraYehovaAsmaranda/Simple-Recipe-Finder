@@ -102,9 +102,9 @@ export default function MealPage() {
           Go Back
         </Button>
       </div>
-      <div className="container mx-auto my-10 grid lg:grid-cols-2 gap-4 h-full">
+      <div className="container mx-auto my-10 grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
         <div className="h-full">
-          <Card className="flex flex-col shadow-xl h-full">
+          <Card className="shadow-xl h-full">
             <CardHeader>
               <div
                 className="w-full h-64 rounded-lg bg-cover bg-center"
@@ -133,16 +133,17 @@ export default function MealPage() {
                 <CardTitle>Tutorial Video</CardTitle>
               </CardHeader>
               <CardContent>
-                <iframe
-                  width="560"
-                  height="315"
-                  src="https://www.youtube.com/embed/c-GePPbJrBk?si=O22QJFgEPc5q1I6M"
-                  title="YouTube video player"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
-                ></iframe>
+                <div className="relative overflow-hidden pb-[56.25%]">
+                  <iframe
+                    className="absolute top-0 left-0 w-full h-full"
+                    src="https://www.youtube.com/embed/c-GePPbJrBk?si=O22QJFgEPc5q1I6M"
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  ></iframe>
+                </div>
               </CardContent>
             </Card>
           </div>
